@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+
+        <h1 class="text-3xl font-bold text-slate-800">
+            Orders
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+            Manage customer laundry orders.
+        </p>
+
+    </div>
+
+    <a href="/orders/create/"
+       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow">
+
+        + New Order
+
+    </a>
+
+</div>
+
+<div class="bg-white rounded-xl shadow overflow-hidden">
+
+    <table class="w-full">
+
+        <thead class="bg-slate-100">
+
+            <tr>
+
+                <th class="p-4 text-left">Receipt</th>
+                <th class="p-4 text-left">Customer</th>
+                <th class="p-4 text-left">Status</th>
+                <th class="p-4 text-right">Total</th>
+                <th class="p-4 text-right">Paid</th>
+                <th class="p-4 text-right">Balance</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for o in orders %}
+
+        <tr class="border-t hover:bg-slate-50">
+
+            <td class="p-4">
+
+                <a href="/orders/{{ o.id }}/"
+                   class="text-blue-600 font-semibold hover:underline">
+
+                    {{ o.receipt_number }}
+
+                </a>
+
+            </td>
+
+            <td class="p-4">
+
+                <div class="font-medium">
+                    {{ o.customer.name }}
+                </div>
+
+                <div class="text-sm text-slate-500">
+                    {{ o.customer.phone }}
+                </div>
+
+            </td>
+
+            <td class="p-4">
+
+                {% if o.status == "RECEIVED" %}
+                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        Received
+                    </span>
+
+                {% elif o.status == "WASHING" %}
+                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                        Washing
+                    </span>
+
+                {% elif o.status == "DRYING" %}
+                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                        Drying
+                    </span>
+
+                {% elif o.status == "IRONING" %}
+                    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
+                        Ironing
+                    </span>
+
+                {% elif o.status == "READY" %}
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                        Ready
+                    </span>
+
+                {% elif o.status == "COLLECTED" %}
+                    <span class="bg-black text-white px-3 py-1 rounded-full text-sm">
+                        Collected
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td class="p-4 text-right font-semibold">
+
+                {{ o.total_amount|floatformat:2 }}
+
+            </td>
+
+            <td class="p-4 text-right text-green-600 font-semibold">
+
+                {{ o.total_paid|floatformat:2 }}
+
+            </td>
+
+            <td class="p-4 text-right">
+
+                {% if o.balance_due > 0 %}
+
+                    <span class="text-red-600 font-semibold">
+
+                        {{ o.balance_due|floatformat:2 }}
+
+                    </span>
+
+                {% else %}
+
+                    <span class="text-green-600 font-semibold">
+
+                        Paid
+
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="6"
+                class="text-center py-12 text-slate-500">
+
+                No orders have been created yet.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

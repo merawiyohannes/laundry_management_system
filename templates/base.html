@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kokeb Laundry by Eyasu</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100">
+
+<div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col">
+
+        <div class="p-6 border-b border-slate-700">
+
+            <h1 class="text-2xl font-bold">
+                🧺 Kokeb Laundry
+            </h1>
+
+            <p class="text-slate-400 text-sm mt-1">
+                by Eyasu
+            </p>
+
+        </div>
+
+        <nav class="flex-1 p-4 space-y-2">
+
+            {% if request.user.is_superuser %}
+                <a href="/dashboard/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                    📊 Dashboard
+                </a>
+            {% else %}
+                <a href="/dashboard/worker/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                    📊 Dashboard
+                </a>
+            {% endif %}
+
+            <a href="/customers/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                👤 Customers
+            </a>
+
+            <a href="/orders/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                📦 Orders
+            </a>
+
+            <a href="/payments/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                💳 Payments
+            </a>
+            
+            <a href="/accounts/password-change/"
+            class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                🔐 Change Password
+            </a>
+
+            {% if request.user.is_superuser %}
+                <a href="/services/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                    🧼 Services
+                </a>
+                
+                <a href="/accounts/create-worker/"
+                class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                    ➕ Signup Worker
+                </a>
+            {% endif %}
+
+            <a href="/accounts/logout/"
+            class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                🚪 Logout
+            </a>
+
+        </nav>
+        <div class="p-5 border-t border-slate-700 text-center text-sm text-slate-400">
+
+            Kokeb Laundry ERP<br>
+            Version 1.0
+
+        </div>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-10">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</div>
+
+</body>
+</html>

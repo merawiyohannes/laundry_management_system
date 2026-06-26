@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HEADER -->
+<div class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-800">
+        Welcome back, {{ request.user.username }} 👋
+    </h1>
+
+    <p class="text-slate-500">
+        Business Control Center
+    </p>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="grid lg:grid-cols-4 md:grid-cols-2 gap-5 mb-10">
+
+    <a href="/orders/create/" class="bg-blue-600 text-white rounded-xl shadow p-6 hover:bg-blue-700 transition">
+        📦 Orders
+    </a>
+
+    <a href="/customers/create/" class="bg-green-600 text-white rounded-xl shadow p-6 hover:bg-green-700 transition">
+        👤 Customers
+    </a>
+
+    <a href="/payments/create/" class="bg-purple-600 text-white rounded-xl shadow p-6 hover:bg-purple-700 transition">
+        💳 Payments
+    </a>
+
+    <a href="/accounts/create-worker/" class="bg-slate-800 text-white rounded-xl shadow p-6 hover:bg-slate-900 transition">
+        ➕ Workers
+    </a>
+
+</div>
+
+<!-- CORE METRICS -->
+<div class="grid lg:grid-cols-4 md:grid-cols-2 gap-6 mb-10">
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Orders Today</p>
+        <h2 class="text-3xl font-bold text-blue-600">{{ orders_today }}</h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Active Orders</p>
+        <h2 class="text-3xl font-bold text-yellow-600">{{ active_orders }}</h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Ready Orders</p>
+        <h2 class="text-3xl font-bold text-green-600">{{ ready_orders }}</h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Total Orders</p>
+        <h2 class="text-3xl font-bold text-slate-800">{{ total_orders }}</h2>
+    </div>
+
+</div>
+
+<!-- REVENUE -->
+<div class="grid lg:grid-cols-3 md:grid-cols-2 gap-6 mb-10">
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Today Revenue</p>
+        <h2 class="text-3xl font-bold text-purple-600">
+            {{ revenue_today|floatformat:2 }} ETB
+        </h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Weekly Revenue</p>
+        <h2 class="text-3xl font-bold text-indigo-600">
+            {{ revenue_week|floatformat:2 }} ETB
+        </h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Total Revenue</p>
+        <h2 class="text-3xl font-bold text-slate-900">
+            {{ total_revenue|floatformat:2 }} ETB
+        </h2>
+    </div>
+
+</div>
+
+<!-- BUSINESS SIZE -->
+<div class="grid md:grid-cols-3 gap-6">
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Customers</p>
+        <h2 class="text-3xl font-bold text-blue-600">{{ total_customers }}</h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Payments</p>
+        <h2 class="text-3xl font-bold text-green-600">{{ total_payments }}</h2>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow">
+        <p class="text-slate-500 text-sm">Workers</p>
+        <h2 class="text-3xl font-bold text-purple-600">{{ total_workers }}</h2>
+    </div>
+
+</div>
+
+{% endblock %}

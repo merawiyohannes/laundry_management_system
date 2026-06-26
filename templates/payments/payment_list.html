@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+
+        <h1 class="text-3xl font-bold text-slate-800">
+
+            Payment History
+
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+
+            All recorded customer payments.
+
+        </p>
+
+    </div>
+
+    <a href="/payments/create/"
+       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow">
+
+        + Record Payment
+
+    </a>
+
+</div>
+
+<div class="bg-white rounded-xl shadow overflow-hidden">
+
+    <table class="w-full">
+
+        <thead class="bg-slate-100">
+
+            <tr>
+
+                <th class="p-4 text-left">Receipt</th>
+                <th class="p-4 text-left">Customer</th>
+                <th class="p-4 text-left">Amount</th>
+                <th class="p-4 text-left">Method</th>
+                <th class="p-4 text-left">Date</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for payment in payments %}
+
+        <tr class="border-t hover:bg-slate-50">
+
+            <td class="p-4 font-semibold">
+
+                <a href="/orders/{{ payment.order.id }}/"
+                   class="text-blue-600 hover:underline">
+
+                    {{ payment.order.receipt_number }}
+
+                </a>
+
+            </td>
+
+            <td class="p-4">
+
+                <div class="font-medium">
+
+                    {{ payment.order.customer.name }}
+
+                </div>
+
+            </td>
+
+            <td class="p-4 font-semibold text-green-600">
+
+                {{ payment.amount|floatformat:2 }} ETB
+
+            </td>
+
+            <td class="p-4">
+
+                {% if payment.payment_method == "CASH" %}
+
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+
+                    Cash
+
+                </span>
+
+                {% else %}
+
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+
+                    Telebirr
+
+                </span>
+
+                {% endif %}
+
+            </td>
+
+            <td class="p-4 text-slate-500">
+
+                {{ payment.created_at|date:"M d, Y H:i" }}
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="5"
+                class="text-center py-12 text-slate-500">
+
+                No payments have been recorded yet.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

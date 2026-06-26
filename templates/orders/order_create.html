@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="text-2xl font-bold mb-6">
+    Create Order
+</h1>
+
+<form method="POST" class="bg-white p-6 rounded shadow space-y-4">
+
+    {% csrf_token %}
+
+    <!-- CUSTOMER -->
+    <div>
+        <label class="block mb-1">Customer</label>
+        <select name="customer" class="w-full border p-2 rounded">
+            {% for c in customers %}
+                <option value="{{ c.id }}">
+                    {{ c.name }} - {{ c.phone }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <hr>
+
+    <!-- ITEMS -->
+    <h2 class="font-bold">Items</h2>
+
+    <div id="items-container" class="space-y-3">
+
+        <div class="grid grid-cols-2 gap-2 item-row">
+
+            <select name="service" class="border p-2">
+                {% for s in services %}
+                    <option value="{{ s.id }}">
+                        {{ s.name }} ({{ s.unit_price }})
+                    </option>
+                {% endfor %}
+            </select>
+
+            <input type="number"
+                   step="0.1"
+                   name="quantity"
+                   class="border p-2"
+                   placeholder="Qty / KG">
+
+        </div>
+
+    </div>
+
+    <button type="button"
+            onclick="addItem()"
+            class="bg-gray-700 text-white px-4 py-2 rounded mt-3">
+
+        + Add Item
+
+    </button>
+
+    <hr>
+
+    <button type="submit"
+            class="bg-green-600 text-white px-4 py-2 rounded">
+
+        Create Order
+
+    </button>
+
+</form>
+
+<script>
+function addItem() {
+    const container = document.getElementById("items-container");
+
+    const row = document.createElement("div");
+    row.className = "grid grid-cols-2 gap-2 item-row mt-2";
+
+    row.innerHTML = `
+        <select name="service" class="border p-2">
+            {% for s in services %}
+                <option value="{{ s.id }}">
+                    {{ s.name }} ({{ s.unit_price }})
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="number"
+               step="0.1"
+               name="quantity"
+               class="border p-2"
+               placeholder="Qty / KG">
+    `;
+
+    container.appendChild(row);
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+
+        <h1 class="text-3xl font-bold text-slate-800">
+
+            Services
+
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+
+            Manage laundry services and pricing.
+
+        </p>
+
+    </div>
+
+    <a href="/services/create/"
+       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow">
+
+        + Add Service
+
+    </a>
+
+</div>
+
+<div class="bg-white rounded-xl shadow overflow-hidden">
+
+    <table class="w-full">
+
+        <thead class="bg-slate-100">
+
+            <tr>
+
+                <th class="p-4 text-left">Service</th>
+                <th class="p-4 text-left">Pricing</th>
+                <th class="p-4 text-right">Price</th>
+                <th class="p-4 text-center">Status</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for s in services %}
+
+        <tr class="border-t hover:bg-slate-50">
+
+            <td class="p-4 font-medium">
+
+                {{ s.name }}
+
+            </td>
+
+            <td class="p-4">
+
+                {% if s.pricing_type == "ITEM" %}
+
+                    Per Item
+
+                {% else %}
+
+                    Per Kilogram
+
+                {% endif %}
+
+            </td>
+
+            <td class="p-4 text-right font-semibold">
+
+                {{ s.unit_price|floatformat:2 }} ETB
+
+            </td>
+
+            <td class="p-4 text-center">
+
+                {% if s.is_active %}
+
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+
+                        Active
+
+                    </span>
+
+                {% else %}
+
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+
+                        Inactive
+
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="4"
+                class="text-center py-12 text-slate-500">
+
+                No services have been added yet.
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
