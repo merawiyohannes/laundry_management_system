@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="flex justify-between items-center mb-8">
+<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
     <div>
 
@@ -17,7 +17,7 @@
     </div>
 
     <a href="/orders/create/"
-       class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow">
+       class="w-full md:w-auto text-center bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow">
 
         + New Order
 
@@ -25,9 +25,9 @@
 
 </div>
 
-<div class="bg-white rounded-xl shadow overflow-hidden">
+<div class="bg-white rounded-xl shadow overflow-x-auto">
 
-    <table class="w-full">
+    <table class="min-w-[900px] w-full">
 
         <thead class="bg-slate-100">
 
@@ -76,31 +76,37 @@
             <td class="p-4">
 
                 {% if o.status == "RECEIVED" %}
+
                     <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
                         Received
                     </span>
 
                 {% elif o.status == "WASHING" %}
+
                     <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
                         Washing
                     </span>
 
                 {% elif o.status == "DRYING" %}
+
                     <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
                         Drying
                     </span>
 
                 {% elif o.status == "IRONING" %}
+
                     <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
                         Ironing
                     </span>
 
                 {% elif o.status == "READY" %}
+
                     <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
                         Ready
                     </span>
 
                 {% elif o.status == "COLLECTED" %}
+
                     <span class="bg-black text-white px-3 py-1 rounded-full text-sm">
                         Collected
                     </span>

@@ -1,79 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Kokeb Laundry by Eyasu</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body class="bg-slate-100">
 
 <div class="flex min-h-screen">
 
+    <!-- Mobile Overlay -->
+
+    <div id="overlay"
+         class="hidden fixed inset-0 bg-black/40 z-40 lg:hidden"
+         onclick="closeSidebar()">
+    </div>
+
     <!-- Sidebar -->
-    <aside class="w-64 bg-slate-900 text-white flex flex-col">
 
-        <div class="p-6 border-b border-slate-700">
+    <aside id="sidebar"
+           class="fixed lg:static inset-y-0 left-0 w-64 bg-slate-900 text-white flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-50">
 
-            <h1 class="text-2xl font-bold">
-                🧺 Kokeb Laundry
-            </h1>
+        <div class="p-6 border-b border-slate-700 flex justify-between items-center">
 
-            <p class="text-slate-400 text-sm mt-1">
-                by Eyasu
-            </p>
+            <div>
+
+                <h1 class="text-2xl font-bold">
+                    🧺 Kokeb Laundry
+                </h1>
+
+                <p class="text-slate-400 text-sm mt-1">
+                    by Eyasu
+                </p>
+
+            </div>
+
+            <button
+                onclick="closeSidebar()"
+                class="lg:hidden text-2xl">
+
+                ✕
+
+            </button>
 
         </div>
 
-        <nav class="flex-1 p-4 space-y-2">
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
 
             {% if request.user.is_superuser %}
-                <a href="/dashboard/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                <a href="/dashboard/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                     📊 Dashboard
                 </a>
             {% else %}
-                <a href="/dashboard/worker/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+                <a href="/dashboard/worker/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                     📊 Dashboard
                 </a>
             {% endif %}
 
-            <a href="/customers/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+            <a href="/customers/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                 👤 Customers
             </a>
 
-            <a href="/orders/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+            <a href="/orders/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                 📦 Orders
             </a>
 
-            <a href="/payments/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+            <a href="/payments/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                 💳 Payments
             </a>
-            
-            <a href="/accounts/password-change/"
-            class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+
+            <a href="/accounts/password-change/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                 🔐 Change Password
             </a>
 
             {% if request.user.is_superuser %}
-                <a href="/services/" class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+
+                <a href="/services/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                     🧼 Services
                 </a>
-                
-                <a href="/accounts/create-worker/"
-                class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+
+                <a href="/accounts/create-worker/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                     ➕ Signup Worker
                 </a>
+
             {% endif %}
 
-            <a href="/accounts/logout/"
-            class="block rounded-lg px-4 py-3 hover:bg-slate-800 transition">
+            <a href="/accounts/logout/" class="block rounded-lg px-4 py-3 hover:bg-slate-800">
                 🚪 Logout
             </a>
 
         </nav>
+
         <div class="p-5 border-t border-slate-700 text-center text-sm text-slate-400">
 
             Kokeb Laundry ERP<br>
@@ -84,7 +108,26 @@
     </aside>
 
     <!-- Main -->
-    <main class="flex-1 p-10">
+
+    <main class="flex-1 p-4 md:p-6 lg:p-10">
+
+        <!-- Mobile Top Bar -->
+
+        <div class="lg:hidden flex items-center justify-between mb-6">
+
+            <button
+                onclick="openSidebar()"
+                class="bg-slate-900 text-white px-3 py-2 rounded">
+
+                ☰
+
+            </button>
+
+            <h2 class="font-bold">
+                Kokeb Laundry
+            </h2>
+
+        </div>
 
         {% block content %}
         {% endblock %}
@@ -93,5 +136,24 @@
 
 </div>
 
+<script>
+
+function openSidebar(){
+
+    document.getElementById("sidebar").classList.remove("-translate-x-full");
+    document.getElementById("overlay").classList.remove("hidden");
+
+}
+
+function closeSidebar(){
+
+    document.getElementById("sidebar").classList.add("-translate-x-full");
+    document.getElementById("overlay").classList.add("hidden");
+
+}
+
+</script>
+
 </body>
+
 </html>

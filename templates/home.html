@@ -4,6 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Kokeb Laundry</title>
 
@@ -13,13 +14,13 @@
 
 <body class="bg-slate-100">
 
-<div class="min-h-screen flex items-center justify-center">
+<div class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="bg-white shadow-xl rounded-2xl p-12 w-full max-w-3xl">
+    <div class="bg-white shadow-xl rounded-2xl p-6 md:p-10 lg:p-12 w-full max-w-3xl">
 
         <div class="text-center">
 
-            <h1 class="text-5xl font-bold text-blue-700">
+            <h1 class="text-3xl md:text-5xl font-bold text-blue-700">
 
                 KOKEB LAUNDRY
 
@@ -31,7 +32,7 @@
 
             </p>
 
-            <p class="mt-8 text-slate-600">
+            <p class="mt-8 text-slate-600 text-sm md:text-base">
 
                 Fast • Professional • Reliable Laundry Management
 
@@ -39,8 +40,7 @@
 
         </div>
 
-        <div class="mt-12">
-            <form method="GET" action="/track/" class="mt-12">
+        <form method="GET" action="/track/" class="mt-10">
 
             <input
                 type="text"
@@ -48,9 +48,6 @@
                 placeholder="Receipt Number or Phone Number"
                 required
                 class="w-full border border-slate-300 rounded-lg px-5 py-4 focus:ring-2 focus:ring-blue-300 outline-none">
-        </div>
-
-        <div class="mt-6">
 
             <button
                 class="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-lg">
@@ -58,8 +55,8 @@
                 Track Laundry
 
             </button>
-            </form>
-        </div>
+
+        </form>
 
         <div class="mt-10 text-center">
 

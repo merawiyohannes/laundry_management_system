@@ -2,97 +2,158 @@
 
 {% block content %}
 
-<h1 class="text-2xl font-bold mb-6">
-    Create Order
-</h1>
+<div class="max-w-4xl">
 
-<form method="POST" class="bg-white p-6 rounded shadow space-y-4">
+    <h1 class="text-3xl font-bold text-slate-800 mb-2">
+        Create Order
+    </h1>
 
-    {% csrf_token %}
+    <p class="text-slate-500 mb-8">
+        Register a new laundry order.
+    </p>
 
-    <!-- CUSTOMER -->
-    <div>
-        <label class="block mb-1">Customer</label>
-        <select name="customer" class="w-full border p-2 rounded">
-            {% for c in customers %}
+    <form method="POST"
+          class="bg-white rounded-xl shadow p-4 md:p-8 space-y-6">
+
+        {% csrf_token %}
+
+        <!-- CUSTOMER -->
+
+        <div>
+
+            <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+                Customer
+
+            </label>
+
+            <select
+                name="customer"
+                class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none">
+
+                {% for c in customers %}
+
                 <option value="{{ c.id }}">
+
                     {{ c.name }} - {{ c.phone }}
+
                 </option>
-            {% endfor %}
-        </select>
-    </div>
 
-    <hr>
-
-    <!-- ITEMS -->
-    <h2 class="font-bold">Items</h2>
-
-    <div id="items-container" class="space-y-3">
-
-        <div class="grid grid-cols-2 gap-2 item-row">
-
-            <select name="service" class="border p-2">
-                {% for s in services %}
-                    <option value="{{ s.id }}">
-                        {{ s.name }} ({{ s.unit_price }})
-                    </option>
                 {% endfor %}
-            </select>
 
-            <input type="number"
-                   step="0.1"
-                   name="quantity"
-                   class="border p-2"
-                   placeholder="Qty / KG">
+            </select>
 
         </div>
 
-    </div>
+        <hr>
 
-    <button type="button"
+        <!-- ITEMS -->
+
+        <div>
+
+            <h2 class="text-lg font-bold mb-4">
+
+                Laundry Items
+
+            </h2>
+
+            <div id="items-container" class="space-y-4">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 item-row">
+
+                    <select
+                        name="service"
+                        class="border border-slate-300 rounded-lg px-4 py-3">
+
+                        {% for s in services %}
+
+                        <option value="{{ s.id }}">
+
+                            {{ s.name }} ({{ s.unit_price }})
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <input
+                        type="number"
+                        step="0.1"
+                        name="quantity"
+                        placeholder="Qty / KG"
+                        class="border border-slate-300 rounded-lg px-4 py-3">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+            type="button"
             onclick="addItem()"
-            class="bg-gray-700 text-white px-4 py-2 rounded mt-3">
+            class="w-full md:w-auto bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-lg">
 
-        + Add Item
+            + Add Item
 
-    </button>
+        </button>
 
-    <hr>
+        <hr>
 
-    <button type="submit"
-            class="bg-green-600 text-white px-4 py-2 rounded">
+        <button
+            type="submit"
+            class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg shadow">
 
-        Create Order
+            Create Order
 
-    </button>
+        </button>
 
-</form>
+    </form>
+
+</div>
 
 <script>
+
 function addItem() {
+
     const container = document.getElementById("items-container");
 
     const row = document.createElement("div");
-    row.className = "grid grid-cols-2 gap-2 item-row mt-2";
+
+    row.className = "grid grid-cols-1 md:grid-cols-2 gap-3 item-row";
 
     row.innerHTML = `
-        <select name="service" class="border p-2">
+
+        <select
+            name="service"
+            class="border border-slate-300 rounded-lg px-4 py-3">
+
             {% for s in services %}
-                <option value="{{ s.id }}">
-                    {{ s.name }} ({{ s.unit_price }})
-                </option>
+
+            <option value="{{ s.id }}">
+
+                {{ s.name }} ({{ s.unit_price }})
+
+            </option>
+
             {% endfor %}
+
         </select>
 
-        <input type="number"
-               step="0.1"
-               name="quantity"
-               class="border p-2"
-               placeholder="Qty / KG">
+        <input
+            type="number"
+            step="0.1"
+            name="quantity"
+            placeholder="Qty / KG"
+            class="border border-slate-300 rounded-lg px-4 py-3">
+
     `;
 
     container.appendChild(row);
+
 }
+
 </script>
 
 {% endblock %}

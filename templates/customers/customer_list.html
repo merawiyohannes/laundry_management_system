@@ -2,11 +2,11 @@
 
 {% block content %}
 
-<div class="flex justify-between items-center mb-8">
+<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
     <div>
 
-        <h1 class="text-3xl font-bold text-slate-800">
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800">
             Customers
         </h1>
 
@@ -17,7 +17,7 @@
     </div>
 
     <a href="/customers/create/"
-       class="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-3 rounded-lg shadow">
+       class="bg-blue-600 hover:bg-blue-700 transition text-white px-5 py-3 rounded-lg shadow text-center">
 
         + Add Customer
 
@@ -27,57 +27,61 @@
 
 <div class="bg-white rounded-xl shadow overflow-hidden">
 
-    <table class="w-full">
+    <div class="overflow-x-auto">
 
-        <thead class="bg-slate-100">
+        <table class="min-w-full">
 
-            <tr>
+            <thead class="bg-slate-100">
 
-                <th class="text-left p-4">Name</th>
-                <th class="text-left p-4">Phone</th>
-                <th class="text-left p-4">Address</th>
+                <tr>
 
-            </tr>
+                    <th class="text-left p-4 whitespace-nowrap">Name</th>
+                    <th class="text-left p-4 whitespace-nowrap">Phone</th>
+                    <th class="text-left p-4 whitespace-nowrap">Address</th>
 
-        </thead>
+                </tr>
 
-        <tbody>
+            </thead>
 
-            {% for c in customers %}
+            <tbody>
 
-            <tr class="border-t hover:bg-slate-50">
+                {% for c in customers %}
 
-                <td class="p-4 font-medium text-slate-700">
-                    {{ c.name }}
-                </td>
+                <tr class="border-t hover:bg-slate-50">
 
-                <td class="p-4">
-                    {{ c.phone }}
-                </td>
+                    <td class="p-4 font-medium text-slate-700 whitespace-nowrap">
+                        {{ c.name }}
+                    </td>
 
-                <td class="p-4 text-slate-600">
-                    {{ c.address }}
-                </td>
+                    <td class="p-4 whitespace-nowrap">
+                        {{ c.phone }}
+                    </td>
 
-            </tr>
+                    <td class="p-4 text-slate-600">
+                        {{ c.address }}
+                    </td>
 
-            {% empty %}
+                </tr>
 
-            <tr>
+                {% empty %}
 
-                <td colspan="3" class="text-center py-12 text-slate-400">
+                <tr>
 
-                    No customers found.
+                    <td colspan="3" class="text-center py-12 text-slate-400">
 
-                </td>
+                        No customers found.
 
-            </tr>
+                    </td>
 
-            {% endfor %}
+                </tr>
 
-        </tbody>
+                {% endfor %}
 
-    </table>
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
