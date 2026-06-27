@@ -7,7 +7,7 @@ from .models import Order, OrderLine
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from payments.models import Payment
-
+from django.db.models import Q
 
 def pay_remaining(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -24,11 +24,26 @@ def pay_remaining(request, order_id):
     return redirect(f"/orders/{order.id}/")
 
 def order_list(request):
-    orders = Order.objects.all().order_by("-id")
 
-    return render(request, "orders/order_list.html", {
-        "orders": orders
-    })
+    query = request.GET.get("q", "")
+
+    orders = Order.objects.select_related("customer")
+
+    if query:
+        orders = orders.filter(
+            Q(receipt_number__icontains=query) |
+            Q(customer__name__icontains=query) |
+            Q(customer__phone__icontains=query)
+        )
+
+    orders = orders.order_by("-created_at")
+
+    context = {
+        "orders": orders,
+        "query": query,
+    }
+
+    return render(request, "orders/order_list.html", context)
     
 def order_create(request):
 

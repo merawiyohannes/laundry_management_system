@@ -2,15 +2,21 @@ from django.shortcuts import render, redirect
 from orders.models import Order
 from .models import Payment
 
-def create_payment(request):
-    orders = Order.objects.all()
+def create_payment(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    # BLOCK fully paid orders
+    if order.balance_due <= 0:
+        return redirect(f"/orders/{order.id}/")
 
     if request.method == "POST":
-        order_id = request.POST.get("order")
+
         amount = float(request.POST.get("amount"))
         method = request.POST.get("method")
 
-        order = Order.objects.get(id=order_id)
+        # BLOCK overpayment
+        if amount > order.balance_due:
+            amount = order.balance_due  # or reject instead
 
         Payment.objects.create(
             order=order,
@@ -21,9 +27,8 @@ def create_payment(request):
         return redirect(f"/orders/{order.id}/")
 
     return render(request, "payments/create_payment.html", {
-        "orders": orders
+        "order": order
     })    
-    
 
 def payment_list(request):
 

@@ -5,171 +5,183 @@
 <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
     <div>
-
         <h1 class="text-3xl font-bold text-slate-800">
             Orders
         </h1>
-
         <p class="text-slate-500 mt-2">
             Manage customer laundry orders.
         </p>
-
     </div>
 
     <a href="/orders/create/"
        class="w-full md:w-auto text-center bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg shadow">
-
         + New Order
-
     </a>
 
 </div>
 
+<!-- SEARCH -->
+<div class="mb-6">
+    <input
+        id="search"
+        type="text"
+        name="q"
+        value="{{ query }}"
+        placeholder="🔍 Search by receipt, customer or phone..."
+        autocomplete="off"
+        class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-300 outline-none">
+</div>
+
+<!-- TABLE WRAPPER (FIX RESPONSIVENESS) -->
 <div class="bg-white rounded-xl shadow overflow-x-auto">
 
-    <table class="min-w-[900px] w-full">
+    <div class="min-w-[900px]">
 
-        <thead class="bg-slate-100">
+        <table class="w-full">
 
-            <tr>
+            <thead class="bg-slate-100">
+                <tr>
+                    <th class="p-4 text-left">Order</th>
+                    <th class="p-4 text-left">Customer</th>
+                    <th class="p-4 text-left">Status</th>
+                    <th class="p-4 text-right">Total</th>
+                    <th class="p-4 text-right">Paid</th>
+                    <th class="p-4 text-right">Balance</th>
+                    <th class="p-4 text-center">Actions</th>
+                </tr>
+            </thead>
 
-                <th class="p-4 text-left">Receipt</th>
-                <th class="p-4 text-left">Customer</th>
-                <th class="p-4 text-left">Status</th>
-                <th class="p-4 text-right">Total</th>
-                <th class="p-4 text-right">Paid</th>
-                <th class="p-4 text-right">Balance</th>
+            <tbody>
+
+            {% for o in orders %}
+
+            <tr
+                onclick="window.location='/orders/{{ o.id }}/'"
+                class="border-t cursor-pointer transition-all duration-200 hover:bg-slate-50 hover:-translate-y-[2px] hover:shadow-md active:translate-y-0"
+            >
+
+                <!-- ORDER -->
+                <td class="p-4">
+                    <span class="text-blue-600 font-semibold">
+                        {{ o.receipt_number }}
+                    </span>
+                </td>
+
+                <!-- CUSTOMER -->
+                <td class="p-4">
+                    <div class="font-medium">
+                        {{ o.customer.name }}
+                    </div>
+                    <div class="text-sm text-slate-500">
+                        {{ o.customer.phone }}
+                    </div>
+                </td>
+
+                <!-- STATUS -->
+                <td class="p-4">
+                    {% if o.status == "RECEIVED" %}
+                        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Received</span>
+                    {% elif o.status == "WASHING" %}
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">Washing</span>
+                    {% elif o.status == "DRYING" %}
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">Drying</span>
+                    {% elif o.status == "IRONING" %}
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">Ironing</span>
+                    {% elif o.status == "READY" %}
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">Ready</span>
+                    {% elif o.status == "COLLECTED" %}
+                        <span class="bg-black text-white px-3 py-1 rounded-full text-sm">Collected</span>
+                    {% endif %}
+                </td>
+
+                <!-- TOTAL -->
+                <td class="p-4 text-right font-semibold">
+                    {{ o.total_amount|floatformat:2 }}
+                </td>
+
+                <!-- PAID -->
+                <td class="p-4 text-right text-green-600 font-semibold">
+                    {{ o.total_paid|floatformat:2 }}
+                </td>
+
+                <!-- BALANCE -->
+                <td class="p-4 text-right">
+                    {% if o.balance_due > 0 %}
+                        <span class="text-red-600 font-semibold">
+                            {{ o.balance_due|floatformat:2 }}
+                        </span>
+                    {% else %}
+                        <span class="text-green-600 font-semibold">
+                            Paid
+                        </span>
+                    {% endif %}
+                </td>
+
+                <!-- ACTIONS -->
+                <td class="p-4 text-center">
+
+                    <div class="flex flex-wrap justify-center gap-2">
+
+                        {% if o.balance_due > 0 %}
+                        <a href="/payments/order/{{ o.id }}/create/"
+                           onclick="event.stopPropagation();"
+                           class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm">
+                            Pay
+                        </a>
+                        {% endif %}
+
+                        {% if o.status != "COLLECTED" %}
+                        <a href="/orders/{{ o.id }}/status/COLLECTED/"
+                           onclick="event.stopPropagation();"
+                           class="bg-black hover:bg-slate-900 text-white px-3 py-1 rounded text-sm">
+                            Collect
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </td>
 
             </tr>
 
-        </thead>
+            {% empty %}
 
-        <tbody>
+            <tr>
+                <td colspan="7" class="text-center py-12 text-slate-500">
+                    No orders have been created yet.
+                </td>
+            </tr>
 
-        {% for o in orders %}
+            {% endfor %}
 
-        <tr class="border-t hover:bg-slate-50">
+            </tbody>
 
-            <td class="p-4">
+        </table>
 
-                <a href="/orders/{{ o.id }}/"
-                   class="text-blue-600 font-semibold hover:underline">
-
-                    {{ o.receipt_number }}
-
-                </a>
-
-            </td>
-
-            <td class="p-4">
-
-                <div class="font-medium">
-                    {{ o.customer.name }}
-                </div>
-
-                <div class="text-sm text-slate-500">
-                    {{ o.customer.phone }}
-                </div>
-
-            </td>
-
-            <td class="p-4">
-
-                {% if o.status == "RECEIVED" %}
-
-                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                        Received
-                    </span>
-
-                {% elif o.status == "WASHING" %}
-
-                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                        Washing
-                    </span>
-
-                {% elif o.status == "DRYING" %}
-
-                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                        Drying
-                    </span>
-
-                {% elif o.status == "IRONING" %}
-
-                    <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
-                        Ironing
-                    </span>
-
-                {% elif o.status == "READY" %}
-
-                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                        Ready
-                    </span>
-
-                {% elif o.status == "COLLECTED" %}
-
-                    <span class="bg-black text-white px-3 py-1 rounded-full text-sm">
-                        Collected
-                    </span>
-
-                {% endif %}
-
-            </td>
-
-            <td class="p-4 text-right font-semibold">
-
-                {{ o.total_amount|floatformat:2 }}
-
-            </td>
-
-            <td class="p-4 text-right text-green-600 font-semibold">
-
-                {{ o.total_paid|floatformat:2 }}
-
-            </td>
-
-            <td class="p-4 text-right">
-
-                {% if o.balance_due > 0 %}
-
-                    <span class="text-red-600 font-semibold">
-
-                        {{ o.balance_due|floatformat:2 }}
-
-                    </span>
-
-                {% else %}
-
-                    <span class="text-green-600 font-semibold">
-
-                        Paid
-
-                    </span>
-
-                {% endif %}
-
-            </td>
-
-        </tr>
-
-        {% empty %}
-
-        <tr>
-
-            <td colspan="6"
-                class="text-center py-12 text-slate-500">
-
-                No orders have been created yet.
-
-            </td>
-
-        </tr>
-
-        {% endfor %}
-
-        </tbody>
-
-    </table>
+    </div>
 
 </div>
+
+<!-- SEARCH SCRIPT (cursor fix only) -->
+<script>
+const search = document.getElementById("search");
+let timer;
+
+window.addEventListener("load", () => {
+    search.focus();
+
+    const len = search.value.length;
+    search.setSelectionRange(len, len);
+});
+
+search.addEventListener("keyup", function () {
+    clearTimeout(timer);
+
+    timer = setTimeout(function () {
+        const q = search.value.trim();
+        window.location.href = "/orders/?q=" + encodeURIComponent(q);
+    }, 250);
+});
+</script>
 
 {% endblock %}
