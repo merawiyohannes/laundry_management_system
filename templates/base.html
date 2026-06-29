@@ -113,7 +113,7 @@
 
         <!-- Mobile Top Bar -->
 
-        <div class="lg:hidden flex items-center justify-between mb-6">
+        <div class="no-print lg:hidden flex items-center justify-between mb-6">
 
             <button
                 onclick="openSidebar()"
@@ -154,6 +154,29 @@ function closeSidebar(){
 
 </script>
 
+<style>
+
+@media print {
+
+    aside,
+    nav,
+    button,
+    a,
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    main {
+        padding: 0;
+    }
+
+}
+
+</style>
 </body>
 
 </html>

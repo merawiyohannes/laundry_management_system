@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from payments.models import Payment
 from django.db.models import Q
+from django.utils import timezone
+from datetime import timedelta
 
 def pay_remaining(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -37,10 +39,11 @@ def order_list(request):
         )
 
     orders = orders.order_by("-created_at")
-
+    today = timezone.localdate()
     context = {
         "orders": orders,
         "query": query,
+        "today": today,
     }
 
     return render(request, "orders/order_list.html", context)
@@ -54,13 +57,15 @@ def order_create(request):
 
         customer_id = request.POST.get("customer")
         customer = Customer.objects.get(id=customer_id)
+        pickup_date = request.POST.get("pickup_date")
 
-        order = Order.objects.create(customer=customer)
+
+        order = Order.objects.create(customer=customer, pickup_date=pickup_date,)
 
         # 🔥 INFINITE ITEMS HANDLING
         service_ids = request.POST.getlist("service")
         quantities = request.POST.getlist("quantity")
-
+                
         for service_id, qty in zip(service_ids, quantities):
 
             if service_id and qty:
@@ -71,10 +76,14 @@ def order_create(request):
                 )
 
         return redirect("order_list")
-
+    default_pickup_date = (
+        timezone.localdate() + timedelta(days=3)
+    ).isoformat()
     return render(request, "orders/order_create.html", {
         "customers": customers,
-        "services": services
+        "services": services,
+        "default_pickup_date": default_pickup_date,
+
     })
             
 def order_detail(request, order_id):

@@ -43,6 +43,7 @@
                 <tr>
                     <th class="p-4 text-left">Order</th>
                     <th class="p-4 text-left">Customer</th>
+                    <th class="p-4 text-left">Pickup</th>
                     <th class="p-4 text-left">Status</th>
                     <th class="p-4 text-right">Total</th>
                     <th class="p-4 text-right">Paid</th>
@@ -75,6 +76,40 @@
                     <div class="text-sm text-slate-500">
                         {{ o.customer.phone }}
                     </div>
+                </td>
+                
+                <td class="p-4">
+
+                    {% if o.status != "COLLECTED" %}
+
+                        {% if o.pickup_date < today %}
+
+                            <span class="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ o.pickup_date }} • Overdue
+                            </span>
+
+                        {% elif o.pickup_date == today %}
+
+                            <span class="inline-block bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ o.pickup_date }} • Today
+                            </span>
+
+                        {% else %}
+
+                            <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ o.pickup_date }}
+                            </span>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <span class="inline-block bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-sm">
+                            {{ o.pickup_date }}
+                        </span>
+
+                    {% endif %}
+
                 </td>
 
                 <!-- STATUS -->

@@ -3,7 +3,10 @@ from django.utils import timezone
 
 from customers.models import Customer
 from services.models import Service
+from datetime import timedelta
 
+def default_pickup_date():
+    return timezone.localdate() + timedelta(days=3)
 
 class Order(models.Model):
 
@@ -33,6 +36,10 @@ class Order(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default=RECEIVED
+    )
+    
+    pickup_date = models.DateField(
+        default=default_pickup_date
     )
 
     receipt_number = models.CharField(

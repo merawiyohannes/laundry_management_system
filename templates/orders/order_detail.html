@@ -2,6 +2,7 @@
 
 {% block content %}
 
+<div class="print-area">
 <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
 
     <div>
@@ -55,6 +56,7 @@
             <p><strong>Name:</strong> {{ order.customer.name }}</p>
             <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
             <p><strong>Status:</strong> {{ order.status }}</p>
+            <p><strong>Pickup Date:</strong> {{ order.pickup_date }}</p>
 
         </div>
 
@@ -156,7 +158,7 @@
 
 <!-- Payment History -->
 
-<div class="bg-white rounded-xl shadow mb-8">
+<div class="no-print bg-white rounded-xl shadow mb-8">
 
     <div class="p-5 border-b">
 
@@ -203,11 +205,21 @@
     </div>
 
 </div>
-
+</div>
 <!-- Action Buttons -->
 
-<div class="flex flex-col sm:flex-row gap-4 mb-8">
+<div class="no-print flex flex-col sm:flex-row gap-4 mb-8">
 
+    <button
+        type="button"
+        onclick="window.print();"
+        class="w-full sm:w-auto bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-lg">
+
+        🖨️ Print Receipt
+
+    </button>
+
+    {% if order.balance_due > 0 %}
     <a href="/payments/order/{{ order.id }}/create/"
        class="w-full sm:w-auto text-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
 
@@ -221,12 +233,13 @@
         💰 Pay Remaining
 
     </a>
+    {% endif %}
 
 </div>
 
 <!-- Workflow -->
 
-<div class="bg-white rounded-xl shadow p-6">
+<div class="no-print bg-white rounded-xl shadow p-6">
 
     <h2 class="text-xl font-bold mb-5">
 
@@ -281,5 +294,42 @@
     </div>
 
 </div>
+
+<style>
+
+@media print {
+
+    aside{
+        display:none !important;
+    }
+
+    .no-print{
+        display:none !important;
+    }
+
+    body{
+        background:white !important;
+    }
+
+    main{
+        padding:0 !important;
+    }
+
+    .print-area{
+        max-width:800px;
+        margin:auto;
+    }
+
+    .print-area .shadow{
+        box-shadow:none !important;
+    }
+
+    .print-area .rounded-xl{
+        border-radius:0;
+    }
+
+}
+
+</style>
 
 {% endblock %}
